@@ -1,0 +1,99 @@
+{
+  "id": "scc1",
+  "version": "1.0.0",
+  "title": "SCC-1: Ship and Component Catalog (provisional, spec Appendix B)",
+  "component_mass": {
+    "engine_mu": 5,
+    "beam_mu": 2,
+    "launcher_mu": 4,
+    "fuel_units_per_mu": 10
+  },
+  "ammo_cargo_units_per_torpedo": 1,
+  "hulls": [
+    {
+      "id": "pathfinder", "name": "Pathfinder", "class": "scout", "hull_tech": 1,
+      "base_mass_mu": 40, "fuel_tank": 120, "cargo": 20,
+      "beam_mounts": 1, "torpedo_mounts": 0, "fighter_bays": 0,
+      "hull_hp": 70, "shields": 30, "crew": 15,
+      "cost": { "credits": 100, "supplies": 20, "ferrite": 50, "corundite": 20, "iridium": 0 }
+    },
+    {
+      "id": "wayfarer", "name": "Wayfarer", "class": "transport", "hull_tech": 2,
+      "base_mass_mu": 110, "fuel_tank": 300, "cargo": 300,
+      "beam_mounts": 1, "torpedo_mounts": 0, "fighter_bays": 0,
+      "hull_hp": 150, "shields": 50, "crew": 35,
+      "cost": { "credits": 220, "supplies": 50, "ferrite": 120, "corundite": 50, "iridium": 0 }
+    },
+    {
+      "id": "sentinel", "name": "Sentinel", "class": "corvette", "hull_tech": 3,
+      "base_mass_mu": 90, "fuel_tank": 160, "cargo": 40,
+      "beam_mounts": 2, "torpedo_mounts": 1, "fighter_bays": 0,
+      "hull_hp": 160, "shields": 90, "crew": 50,
+      "cost": { "credits": 300, "supplies": 60, "ferrite": 150, "corundite": 90, "iridium": 10 }
+    },
+    {
+      "id": "vindicator", "name": "Vindicator", "class": "frigate", "hull_tech": 5,
+      "base_mass_mu": 220, "fuel_tank": 300, "cargo": 80,
+      "beam_mounts": 4, "torpedo_mounts": 3, "fighter_bays": 0,
+      "hull_hp": 360, "shields": 220, "crew": 120,
+      "cost": { "credits": 650, "supplies": 120, "ferrite": 350, "corundite": 200, "iridium": 35 }
+    },
+    {
+      "id": "sovereign", "name": "Sovereign", "class": "battleship", "hull_tech": 8,
+      "base_mass_mu": 600, "fuel_tank": 650, "cargo": 150,
+      "beam_mounts": 8, "torpedo_mounts": 6, "fighter_bays": 0,
+      "hull_hp": 950, "shields": 600, "crew": 350,
+      "cost": { "credits": 1900, "supplies": 300, "ferrite": 900, "corundite": 650, "iridium": 180 }
+    },
+    {
+      "id": "horizon", "name": "Horizon", "class": "carrier", "hull_tech": 7,
+      "base_mass_mu": 450, "fuel_tank": 500, "cargo": 200,
+      "beam_mounts": 4, "torpedo_mounts": 0, "fighter_bays": 60,
+      "hull_hp": 650, "shields": 450, "crew": 260,
+      "cost": { "credits": 1450, "supplies": 260, "ferrite": 700, "corundite": 450, "iridium": 140 }
+    }
+  ],
+  "engines": [
+    {
+      "id": "ion_drive", "name": "Ion Drive", "engine_tech": 1, "max_warp": 4, "fuel_multiplier_bps": 15000,
+      "cost": { "credits": 35, "supplies": 5, "ferrite": 10, "corundite": 20, "iridium": 0 }
+    },
+    {
+      "id": "fusion_drive", "name": "Fusion Drive", "engine_tech": 3, "max_warp": 7, "fuel_multiplier_bps": 10000,
+      "cost": { "credits": 100, "supplies": 10, "ferrite": 20, "corundite": 50, "iridium": 5 }
+    },
+    {
+      "id": "quantum_drive", "name": "Quantum Drive", "engine_tech": 7, "max_warp": 9, "fuel_multiplier_bps": 6500,
+      "cost": { "credits": 280, "supplies": 25, "ferrite": 50, "corundite": 120, "iridium": 30 }
+    }
+  ],
+  "weapons": [
+    {
+      "id": "pulse_laser", "name": "Pulse Laser", "type": "beam", "tech_level": 1,
+      "base_damage": 12, "shield_multiplier_bps": 10000,
+      "cost": { "credits": 35, "supplies": 5, "ferrite": 10, "corundite": 20, "iridium": 0 }
+    },
+    {
+      "id": "plasma_beam", "name": "Plasma Beam", "type": "beam", "tech_level": 4,
+      "base_damage": 25, "shield_multiplier_bps": 12000,
+      "cost": { "credits": 110, "supplies": 12, "ferrite": 20, "corundite": 55, "iridium": 8 }
+    },
+    {
+      "id": "particle_lance", "name": "Particle Lance", "type": "beam", "tech_level": 8,
+      "base_damage": 45, "shield_multiplier_bps": 15000,
+      "cost": { "credits": 320, "supplies": 30, "ferrite": 50, "corundite": 120, "iridium": 35 }
+    },
+    {
+      "id": "kinetic_launcher", "name": "Kinetic Launcher", "type": "torpedo", "tech_level": 1,
+      "base_damage": 35,
+      "cost": { "credits": 70, "supplies": 10, "ferrite": 25, "corundite": 30, "iridium": 0 },
+      "ammo_cost": { "ferrite": 2, "deuterite": 1 }
+    },
+    {
+      "id": "antimatter_launcher", "name": "Antimatter Launcher", "type": "torpedo", "tech_level": 6,
+      "base_damage": 75,
+      "cost": { "credits": 250, "supplies": 25, "ferrite": 40, "corundite": 100, "iridium": 30 },
+      "ammo_cost": { "iridium": 2, "deuterite": 3 }
+    }
+  ]
+}

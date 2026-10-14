@@ -4,9 +4,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-**Pre-implementation.** This repo currently contains only the vhost scaffold (`public/`, `logs/`) and the design spec — no application code exists yet. There is no build system, package manifest, linter, or test runner to document until code is written. When you add the first real code, update this file with the actual commands (composer scripts, PHPUnit invocation, etc.) rather than guessing them now.
+**M0 done** (rules contract — spec §10/§12 gate passes: 15 phases defined in order, MPR-1/SCC-1 schema-validated, golden turn reproducible). The engine skeleton, deterministic math/RNG/hashing primitives, the MPR-1 ruleset and SCC-1 catalog (as schema-validated JSON), and the M0 golden/gate tests exist under `src/`, `schema/`, `rulesets/`, `catalogs/` and `tests/`. The API layer, persistence, and CLI workers (`src/Api/`, `src/Persistence/`, `bin/`) don't exist yet — those start at M1, which fills in real phase logic for movement/economy/starbase actions/victory, stands up the simulation harness and `migrations/`, and adds a minimal replay viewer (see spec §10, §12, §14).
 
 The full specification lives at `docs/spec-v0.10.md` (976 lines). It is the single source of truth for every rule, formula, phase order and open decision below — this file only orients you to its structure so you don't have to re-read it in full each session. Grep for a `§` section number or keyword instead of reading it end to end.
+
+### Commands
+
+```
+composer install   # install dependencies
+composer test       # run the PHPUnit suite (tests/Unit, tests/Golden, tests/Fixtures, tests/Gate)
+composer stan       # PHPStan, level 8
+composer cs         # PHP-CS-Fixer, dry-run/diff (PER-CS)
+composer cs-fix      # PHP-CS-Fixer, apply fixes
+```
+
+Run a single test: `vendor/bin/phpunit --filter <TestClass>::<method>` or point it at a path, e.g. `vendor/bin/phpunit tests/Golden/DeterministicTurnTest.php`.
 
 ## What this is
 
@@ -25,6 +37,21 @@ CLI workers (systemd timers/cron): host-runner, ai-runner, mailer
 ```
 
 The **rules engine is a pure library**: `(state, orders, ruleset, seed) -> (new state, events)`. No I/O, fully unit-testable and replayable. Human API requests and the AI worker call the *same* order-validation and known-world-read services — AI gets no privileged shortcut or hidden-state access (spec §3.12).
+
+### Repo layout
+
+```
+src/Domain/Engine/        HostTurnEngine + the 15 phase classes (src/Domain/Engine/Phase/), one no-op stub each until M1+
+src/Domain/Math/          Rounding (Trunc/Round half-up/ERnd/floor/ceil/isqrt), BasisPoints — integer-only, never bare round()
+src/Domain/Rng/           Seed + SeededStream — HMAC-keyed deterministic, domain-separated byte/int streams
+src/Domain/Hashing/       CanonicalJson (sorted keys, rejects floats) + StateHasher (sha256)
+src/Domain/State/         GameState / OrderSet / TurnEvents — minimal placeholders, grow per-milestone
+src/Domain/Ruleset/       SchemaValidator (Opis), JsonDocument (load+validate+hash), RulesetBundle (pinned per game)
+schema/, rulesets/mpr1/, catalogs/scc1/   JSON Schemas and the versioned MPR-1 ruleset / SCC-1 catalog data
+tests/{Unit,Golden,Fixtures,Gate}        Gate/ holds the per-milestone acceptance-gate tests (e.g. M0GateTest)
+```
+
+`composer test` / `stan` / `cs` / `cs-fix` are set up (PHPUnit, PHPStan level 8, PHP-CS-Fixer on `@PER-CS`) — see Commands above.
 
 ### Three invariants that shape almost every module
 

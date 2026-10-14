@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caelorn.silverday.de/schema/ruleset.schema.json",
+  "title": "Caelorn ruleset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "title", "units", "map", "starting_assets", "economy", "movement", "victory"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "units": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["distance", "mass", "resource", "population", "money", "damage", "percentage"],
+      "properties": {
+        "distance": { "const": "ly" },
+        "mass": { "const": "MU" },
+        "resource": { "const": "integer_unit" },
+        "population": { "const": "colonist" },
+        "money": { "const": "credit" },
+        "damage": { "const": "combat_point" },
+        "percentage": { "const": "basis_points" }
+      }
+    },
+    "map": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planet_count", "field_size_ly", "wraparound", "players_min", "players_max",
+        "homeworlds_per_player", "starbases_per_player", "min_homeworld_separation_ly",
+        "turn_deadline_hours", "turn_limit"
+      ],
+      "properties": {
+        "planet_count": { "type": "integer", "minimum": 50, "maximum": 1500 },
+        "field_size_ly": {
+          "type": "array", "items": { "type": "integer", "exclusiveMinimum": 0 },
+          "minItems": 2, "maxItems": 2
+        },
+        "wraparound": { "type": "boolean" },
+        "players_min": { "type": "integer", "minimum": 2 },
+        "players_max": { "type": "integer", "minimum": 2, "maximum": 11 },
+        "homeworlds_per_player": { "type": "integer", "minimum": 1 },
+        "starbases_per_player": { "type": "integer", "minimum": 0 },
+        "min_homeworld_separation_ly": { "type": "integer", "exclusiveMinimum": 0 },
+        "turn_deadline_hours": { "type": "integer", "exclusiveMinimum": 0 },
+        "turn_limit": { "type": "integer", "exclusiveMinimum": 0 }
+      }
+    },
+    "starting_assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deuterite", "ferrite", "corundite", "iridium", "credits", "supplies", "colonists",
+        "mines", "factories", "defence_posts", "starbases", "hull_tech", "engine_tech", "beam_tech", "torpedo_tech"
+      ],
+      "properties": {
+        "deuterite": { "type": "integer", "minimum": 0 },
+        "ferrite": { "type": "integer", "minimum": 0 },
+        "corundite": { "type": "integer", "minimum": 0 },
+        "iridium": { "type": "integer", "minimum": 0 },
+        "credits": { "type": "integer", "minimum": 0 },
+        "supplies": { "type": "integer", "minimum": 0 },
+        "colonists": { "type": "integer", "minimum": 0 },
+        "mines": { "type": "integer", "minimum": 0 },
+        "factories": { "type": "integer", "minimum": 0 },
+        "defence_posts": { "type": "integer", "minimum": 0 },
+        "starbases": { "type": "integer", "minimum": 0 },
+        "hull_tech": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "engine_tech": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "beam_tech": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "torpedo_tech": { "type": "integer", "minimum": 1, "maximum": 10 }
+      }
+    },
+    "economy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "population_growth_rate_bps", "population_capacity", "climate_factor_default_bps",
+        "new_colony_minimum_colonists", "structure_capacity", "mining", "core_migration_rate_bps",
+        "tax", "happiness", "costs"
+      ],
+      "properties": {
+        "population_growth_rate_bps": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "population_capacity": { "type": "integer", "exclusiveMinimum": 0 },
+        "climate_factor_default_bps": { "type": "integer", "minimum": 0 },
+        "new_colony_minimum_colonists": { "type": "integer", "minimum": 0 },
+        "structure_capacity": {
+          "type": "object", "additionalProperties": false,
+          "required": ["a", "b"],
+          "properties": {
+            "a": { "type": "integer", "minimum": 0 },
+            "b": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "mining": {
+          "type": "object", "additionalProperties": false,
+          "required": ["base_rate"],
+          "properties": { "base_rate": { "type": "integer", "exclusiveMinimum": 0 } }
+        },
+        "core_migration_rate_bps": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "tax": {
+          "type": "object", "additionalProperties": false,
+          "required": ["default_rate_bps", "credit_factor_bps"],
+          "properties": {
+            "default_rate_bps": { "type": "integer", "minimum": 0, "maximum": 10000 },
+            "credit_factor_bps": { "type": "integer", "minimum": 0, "maximum": 10000 }
+          }
+        },
+        "happiness": {
+          "type": "object", "additionalProperties": false,
+          "required": ["initial", "min", "max", "base_gain", "tax_penalty_divisor", "unrest_output_threshold", "unrest_population_threshold"],
+          "properties": {
+            "initial": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "min": { "type": "integer", "const": 0 },
+            "max": { "type": "integer", "const": 100 },
+            "base_gain": { "type": "integer" },
+            "tax_penalty_divisor": { "type": "integer", "exclusiveMinimum": 0 },
+            "unrest_output_threshold": { "type": "integer", "minimum": 0, "maximum": 100 },
+            "unrest_population_threshold": { "type": "integer", "minimum": 0, "maximum": 100 }
+          }
+        },
+        "costs": {
+          "type": "object", "additionalProperties": false,
+          "required": ["mine", "factory", "defence_post", "starbase"],
+          "properties": {
+            "mine": { "$ref": "#/$defs/cost" },
+            "factory": { "$ref": "#/$defs/cost" },
+            "defence_post": { "$ref": "#/$defs/cost" },
+            "starbase": { "$ref": "#/$defs/cost" }
+          }
+        }
+      }
+    },
+    "movement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["distance_per_turn_formula", "fuel_mass_denominator", "cargo_units_per_mu"],
+      "properties": {
+        "distance_per_turn_formula": { "const": "warp_squared" },
+        "fuel_mass_denominator": { "type": "integer", "exclusiveMinimum": 0 },
+        "cargo_units_per_mu": { "type": "integer", "exclusiveMinimum": 0 }
+      }
+    },
+    "victory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dominance_threshold_bps", "dominance_consecutive_turns", "turn_limit", "score_weights_bps", "score_scale"],
+      "properties": {
+        "dominance_threshold_bps": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "dominance_consecutive_turns": { "type": "integer", "exclusiveMinimum": 0 },
+        "turn_limit": { "type": "integer", "exclusiveMinimum": 0 },
+        "score_weights_bps": {
+          "type": "object", "additionalProperties": false,
+          "required": ["planets", "population", "military", "infrastructure"],
+          "properties": {
+            "planets": { "type": "integer", "minimum": 0, "maximum": 10000 },
+            "population": { "type": "integer", "minimum": 0, "maximum": 10000 },
+            "military": { "type": "integer", "minimum": 0, "maximum": 10000 },
+            "infrastructure": { "type": "integer", "minimum": 0, "maximum": 10000 }
+          }
+        },
+        "score_scale": { "type": "integer", "exclusiveMinimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "cost": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 },
+      "minProperties": 1
+    }
+  }
+}

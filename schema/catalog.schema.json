@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caelorn.silverday.de/schema/catalog.schema.json",
+  "title": "Caelorn ship and component catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "title", "component_mass", "ammo_cargo_units_per_torpedo", "hulls", "engines", "weapons"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "component_mass": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine_mu", "beam_mu", "launcher_mu", "fuel_units_per_mu"],
+      "properties": {
+        "engine_mu": { "type": "integer", "minimum": 0 },
+        "beam_mu": { "type": "integer", "minimum": 0 },
+        "launcher_mu": { "type": "integer", "minimum": 0 },
+        "fuel_units_per_mu": { "type": "integer", "exclusiveMinimum": 0 }
+      }
+    },
+    "ammo_cargo_units_per_torpedo": { "type": "integer", "minimum": 0 },
+    "hulls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id", "name", "class", "hull_tech", "base_mass_mu", "fuel_tank", "cargo",
+          "beam_mounts", "torpedo_mounts", "fighter_bays", "hull_hp", "shields", "crew", "cost"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "name": { "type": "string", "minLength": 1 },
+          "class": { "type": "string", "minLength": 1 },
+          "hull_tech": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "base_mass_mu": { "type": "integer", "exclusiveMinimum": 0 },
+          "fuel_tank": { "type": "integer", "minimum": 0 },
+          "cargo": { "type": "integer", "minimum": 0 },
+          "beam_mounts": { "type": "integer", "minimum": 0 },
+          "torpedo_mounts": { "type": "integer", "minimum": 0 },
+          "fighter_bays": { "type": "integer", "minimum": 0 },
+          "hull_hp": { "type": "integer", "exclusiveMinimum": 0 },
+          "shields": { "type": "integer", "minimum": 0 },
+          "crew": { "type": "integer", "exclusiveMinimum": 0 },
+          "cost": { "$ref": "#/$defs/cost" }
+        }
+      }
+    },
+    "engines": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "engine_tech", "max_warp", "fuel_multiplier_bps", "cost"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "name": { "type": "string", "minLength": 1 },
+          "engine_tech": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "max_warp": { "type": "integer", "minimum": 1, "maximum": 9 },
+          "fuel_multiplier_bps": { "type": "integer", "exclusiveMinimum": 0 },
+          "cost": { "$ref": "#/$defs/cost" }
+        }
+      }
+    },
+    "weapons": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "type", "tech_level", "base_damage", "cost"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "name": { "type": "string", "minLength": 1 },
+          "type": { "enum": ["beam", "torpedo"] },
+          "tech_level": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "base_damage": { "type": "integer", "exclusiveMinimum": 0 },
+          "shield_multiplier_bps": { "type": "integer", "minimum": 0 },
+          "cost": { "$ref": "#/$defs/cost" },
+          "ammo_cost": { "$ref": "#/$defs/cost" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "cost": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 },
+      "minProperties": 1
+    }
+  }
+}

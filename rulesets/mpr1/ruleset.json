@@ -1,0 +1,88 @@
+{
+  "id": "mpr1",
+  "version": "1.0.0",
+  "title": "MPR-1: Minimum Playable Ruleset (provisional, spec Appendix A)",
+  "units": {
+    "distance": "ly",
+    "mass": "MU",
+    "resource": "integer_unit",
+    "population": "colonist",
+    "money": "credit",
+    "damage": "combat_point",
+    "percentage": "basis_points"
+  },
+  "map": {
+    "planet_count": 80,
+    "field_size_ly": [1000, 1000],
+    "wraparound": false,
+    "players_min": 2,
+    "players_max": 4,
+    "homeworlds_per_player": 1,
+    "starbases_per_player": 1,
+    "min_homeworld_separation_ly": 300,
+    "turn_deadline_hours": 24,
+    "turn_limit": 70
+  },
+  "starting_assets": {
+    "deuterite": 2000,
+    "ferrite": 2500,
+    "corundite": 1200,
+    "iridium": 400,
+    "credits": 5000,
+    "supplies": 500,
+    "colonists": 10000,
+    "mines": 30,
+    "factories": 40,
+    "defence_posts": 10,
+    "starbases": 1,
+    "hull_tech": 3,
+    "engine_tech": 3,
+    "beam_tech": 2,
+    "torpedo_tech": 1
+  },
+  "economy": {
+    "population_growth_rate_bps": 500,
+    "population_capacity": 100000,
+    "climate_factor_default_bps": 10000,
+    "new_colony_minimum_colonists": 100,
+    "structure_capacity": { "a": 5, "b": 2 },
+    "mining": { "base_rate": 2 },
+    "core_migration_rate_bps": 20,
+    "tax": {
+      "default_rate_bps": 1000,
+      "credit_factor_bps": 1000
+    },
+    "happiness": {
+      "initial": 100,
+      "min": 0,
+      "max": 100,
+      "base_gain": 2,
+      "tax_penalty_divisor": 5,
+      "unrest_output_threshold": 40,
+      "unrest_population_threshold": 20
+    },
+    "costs": {
+      "mine": { "credits": 20, "supplies": 2, "ferrite": 5 },
+      "factory": { "credits": 25, "supplies": 3, "ferrite": 5 },
+      "defence_post": { "credits": 35, "supplies": 5, "ferrite": 8 },
+      "starbase": { "credits": 900, "supplies": 150, "ferrite": 300, "corundite": 150, "iridium": 50 }
+    }
+  },
+  "movement": {
+    "distance_per_turn_formula": "warp_squared",
+    "fuel_mass_denominator": 1000,
+    "cargo_units_per_mu": 10
+  },
+  "victory": {
+    "dominance_threshold_bps": 6000,
+    "dominance_consecutive_turns": 3,
+    "turn_limit": 70,
+    "score_weights_bps": {
+      "planets": 4000,
+      "population": 2000,
+      "military": 2500,
+      "infrastructure": 1500
+    },
+    "score_scale": 10000
+  }
+}
